@@ -47,6 +47,115 @@ The system integrates satellite-derived features such as vegetation, temperature
 
 ---
 
+## Data Acquisition
+
+**Study Area:** Uttarakhand, India  
+
+This project integrates multiple geospatial datasets, including static terrain data, historical fire records, and dynamic satellite-based environmental variables.
+
+---
+
+### 1. Study Area Boundary (Shapefile)
+
+- **Description:** Digital boundary of Uttarakhand used to define the study region  
+- **Purpose:** Clipping and aligning all datasets to a consistent spatial extent  
+
+🔗 Source: GADM Database  
+https://gadm.org/download_country.html  
+
+---
+
+### 2. Digital Elevation Model (DEM)
+
+- **Description:** Raster dataset representing elevation (meters above sea level)  
+- **Purpose:** Used to derive:
+  - Slope  
+  - Aspect  
+- These terrain features significantly influence wildfire spread  
+
+🔗 Source: USGS Earth Explorer  
+https://earthexplorer.usgs.gov/  
+
+Steps:
+- Select Uttarakhand region using map  
+- Download multiple GeoTIFF tiles covering the area  
+
+---
+
+### 3. Historical Fire Data (Target Variable)
+
+- **Description:** Satellite-detected fire events used as ground truth  
+- **Purpose:** Used to generate labels for supervised ML training  
+
+Source: NASA FIRMS  
+https://firms.modaps.eosdis.nasa.gov/download/  
+
+Configuration:
+- Product: MODIS C6.1  
+- Region: India  
+- Date Range: 2017-01-01 to 2024-12-31  
+- Format: Shapefile  
+
+---
+
+## 4. Dynamic Satellite Data (Google Earth Engine)
+
+Environmental variables were extracted using the **Google Earth Engine (GEE) API**.
+
+---
+
+### Land Surface Temperature (LST)
+- Source: MODIS Satellite  
+- Captures surface heat conditions influencing fire ignition  
+
+---
+
+### NDVI (Normalized Difference Vegetation Index)
+- Source: MODIS Satellite  
+- Measures vegetation health and dryness  
+
+---
+
+### Precipitation
+- Source: GPM IMERG Dataset  
+- Indicates moisture availability affecting fire risk  
+
+---
+
+### Climate Variables
+- Source: ERA5 Dataset  
+- Includes:
+  - Wind speed  
+  - Humidity  
+- Important for fire spread dynamics  
+
+---
+
+### Vegetation / Land Cover
+- Source: ESA WorldCover / Landsat  
+- Represents fuel type and vegetation distribution  
+
+---
+
+## Data Processing Summary
+
+- All datasets were:
+  - Clipped to Uttarakhand boundary  
+  - Resampled to a common spatial resolution  
+  - Converted into grid-based format for ML modeling  
+- Fire points were rasterized to create a binary classification target  
+
+---
+
+## Key Contribution
+
+Unlike standard ML projects, this work involves:
+- Multi-source geospatial data integration  
+- Satellite data extraction using Google Earth Engine  
+- Custom target generation from real-world fire events  
+
+This enables a **realistic and scalable wildfire prediction system**.
+
 ### Machine Learning Models
 
 - **XGBoost**
